@@ -1,0 +1,433 @@
+% #region imports
+\documentclass[10pt, twoside]{article}          % document type
+\usepackage[brazil]{babel}                      % portuguese support
+\usepackage[utf8]{inputenc}                     % almost every symbol
+\usepackage[T1]{fontenc}                        % font support
+
+\PassOptionsToPackage{table}{xcolor}            % table colors
+
+\usepackage{amsmath}                            % math enhancements
+\usepackage{amssymb}                            % math symbols
+\usepackage{amsthm}                             % math proof
+\usepackage{bera}                               % mono font
+\usepackage{booktabs}                           % figure tables
+\usepackage{cancel}                             % math cancel
+\usepackage{color}                              % page and text color
+\usepackage{dsfont}                             % indicator function
+\usepackage{enumitem}                           % list settings
+\usepackage{etoolbox}                           % bordermatrix patch
+\usepackage{float}                              % figure here
+\usepackage{fourier}                            % more readable math
+\usepackage{gensymb}                            % math degree
+\usepackage{geometry}                           % page settings
+\usepackage{graphicx}                           % images
+\usepackage{helvet}                             % Arial font
+\usepackage{hyperref}                           % links
+\usepackage{listings}                           % code environment
+\usepackage{mathtools}                          % mathclap
+\usepackage{multicol}                           % page columns
+% \usepackage{newtxmath}                          % more readable math
+\usepackage{nicefrac}                           % nicefrac horizontal fraction
+\usepackage{pifont}                             % correct and wrong symbols
+\usepackage[fontsize=8pt]{scrextend}            % global font size
+\usepackage{tabto}                              % tabto positioning
+\usepackage{textcomp}                           % text leaf
+\usepackage{tikz}                               % graphics
+% \usepackage[table]{xcolor}                      % table colors (option clash)
+\usepackage{xcolor}                             % html colors
+% #endregion
+
+% #region settings
+
+\DeclareSymbolFont{AMSb}{U}{msb}{m}{n}
+\makeatletter
+\DeclareSymbolFontAlphabet{\math@bb}{AMSb}
+\AtBeginDocument{\protected\def\mathbb{\math@bb}} 
+\makeatother
+
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
+
+\DeclareMathAlphabet{\mathfrak}{U}{jkpmia}{m}{it}
+\SetMathAlphabet{\mathfrak}{bold}{U}{jkpmia}{bx}{it}
+
+
+\usetikzlibrary{arrows, positioning, shapes}    % state diagram
+
+\geometry{                                      % page settings
+  papersize={216mm,279mm}, % landscape,
+  top=0.25cm, outer=0.25cm, bottom=0.25cm, inner=0.25cm,
+  includefoot, footskip=0.0cm
+}
+
+\pagenumbering{gobble}                          % no page numbering
+
+\geometry{papersize={210mm,297mm}}              % A4 paper
+
+% \pagecolor{black}                               % page background color
+% \color{white}                                   % text default color
+
+\renewcommand{\familydefault}{\sfdefault}       % Arial font
+
+\lstset{
+  literate=
+  {á}{{\'a}}1 {à}{{\à}}1 {ã}{{\~a}}1
+  {é}{{\'e}}1 {ê}{{\^e}}1
+  {í}{{\'i}}1
+  {ó}{{\'o}}1 {õ}{{\~o}}1
+  {ú}{{\'u}}1 {ü}{{\"u}}1
+  {ç}{{\c{c}}}1
+}                                               % accents in code
+
+% \delimitershortfall=-1pt                        % bigger wrapping brackets
+\delimitershortfall=1pt                         % average wrapping brackets
+\def\dis{\displaystyle}                         % big inline math
+
+\makeatletter
+
+  \def\resetMathstrut@{%                        % default \left and \right in math mode (1/2)
+    \setbox\z@\hbox{%
+      \mathchardef\@tempa\mathcode`\[\relax
+      \def\@tempb##1"##2##3{\the\textfont"##3\char"}%
+      \expandafter\@tempb\meaning\@tempa \relax
+    }%
+    \ht\Mathstrutbox@\ht\z@ \dp\Mathstrutbox@\dp\z@}
+  \mathchardef\@tempa\mathcode`\]\relax
+
+  \def\cantox@vector#1#2#3#4#5#6#7#8{%
+    \dimen@.5\p@
+    \setbox\z@\vbox{\boxmaxdepth.5\p@
+    \hbox{\kern-1.2\p@\kern#1\dimen@$#7{#8}\m@th$}}%
+    \ifx\canto@fil\hidewidth  \wd\z@\z@ \else \kern-#6\unitlength \fi
+    \ooalign{%
+      \canto@fil$\m@th \CancelColor
+      \vcenter{\hbox{\dimen@#6\unitlength \kern\dimen@
+        \multiply\dimen@#4\divide\dimen@#3 \vrule\@depth\dimen@\@width\z@
+        \vector(#3,-#4){#5}%
+      }}_{\raise-#2\dimen@\copy\z@\kern-\scriptspace}$%
+      \canto@fil \cr
+      \hfil \box\@tempboxa \kern\wd\z@ \hfil \cr}}
+  \def\bcancelto#1#2{\let\canto@vector\cantox@vector\cancelto{#1}{#2}}
+
+  \newlength{\normalparindent}
+  \AtBeginDocument{\setlength{\normalparindent}{\parindent}}
+\makeatother
+
+\let\oldphantom\vphantom
+\let\vphantom\relax
+\begingroup                                     % default \left and \right in math mode (1/2)
+  \catcode`(\active \xdef({\mathopen{}\left\string(\vphantom{1j}}
+  \catcode`)\active \xdef){\right\string)\mathclose{}}
+\endgroup
+\mathcode`(="8000 \mathcode`)="8000
+\let\vphantom\oldphantom
+
+\DeclareMathSymbol{*}{\mathbin}{symbols}{"01}   % default \cdot in math mode
+% #endregion
+
+% #region commands
+\newcommand*\diff{\mathop{}\!\mathrm{d}}        % differential d
+
+\DeclareMathOperator{\dom}{dom}                 % dom function
+\DeclareMathOperator{\img}{img}                 % img function
+\DeclareMathOperator{\mdc}{mdc}                 % mdc function
+\DeclareMathOperator{\adj}{adj}                 % adj function
+\DeclareMathOperator{\proj}{proj}               % projection function
+
+\newcommand{\Reals}{\mathds{R}}                 % Reals set
+\newcommand{\Ints}{\mathds{Z}}                  % Integers set
+\newcommand{\Nats}{\mathds{N}}                  % Naturals set
+\newcommand{\Rats}{\mathds{Q}}                  % Rationals set
+\newcommand{\Irats}{\mathds{I}}                 % Irrationals set
+\newcommand{\Primes}{\mathds{P}}                % Primes set
+\newcommand{\ind}{\mathds{1}}                   % indicator function
+
+\newcommand{\given}{\,\middle|\,}               % conditional probability
+
+\renewcommand{\complement}{\mathsf{c}}          % set complement
+
+\DeclareRobustCommand{\Omicron}{%
+  \text{\small\usefont{OMS}{cmsy}{m}{n}O}%
+}                                               % big omicron
+\DeclareRobustCommand{\omicron}{%
+  \text{\small\usefont{OMS}{cmsy}{m}{n}o}%
+}                                               % small omicron
+
+\newcommand{\bigO}{\Omicron}                    % big O
+\newcommand{\smallo}{\omicron}                  % small o
+
+\newcommand{\defeq}{\vcentcolon=}               % definition
+\newcommand{\eqdef}{=\vcentcolon}               % reverse definition
+
+\newcommand{\cmark}{\ding{51}}                  % correct symbol
+\newcommand{\xmark}{\ding{55}}                  % wrong symbol
+\newcommand{\cross}{\ding{61}}                  % amortized symbol
+
+\renewcommand{\deg}{\!\degree\:}                % math degree
+
+\renewcommand{\binom}[2]{\l({{#1}\atop#2}\r)}   % combinations
+
+\DeclareRobustCommand{\Chi}
+  {{\mathpalette\irchi\relax}}
+\newcommand{\irchi}[2]
+  {\raisebox{\depth}{$#1\chi$}}                 % uppercase chi
+
+\newcommand{\overtext}[2]
+  {\overset{\mathclap{\text{#1}}}{#2}}          % text over
+\newcommand{\undertext}[2]
+  {\underset{\mathclap{\text{#1}}}{#2}}         % text under
+\newcommand{\overmath}[2]
+  {\overset{\mathclap{#1}}{#2}}                 % math over
+\newcommand{\undermath}[2]
+  {\underset{\mathclap{#1}}{#2}}                % math under
+\newcommand{\canceltext}[2]
+  {\smash{\overtext{#1}{\cancel{#2}}}}          % text cancel
+
+\newcommand{\vghost}[1]{{%                      % artificial math size
+  \delimitershortfall=-1pt
+  \vphantom{
+    \begingroup
+    \lccode`m=`(\relax
+    \lowercase\expandafter{\romannumeral#1000}%
+    \lccode`m=`)\relax
+    \lowercase\expandafter{\romannumeral#1000}%
+    \endgroup
+  }
+}}
+
+\renewcommand{\l}{\mathopen{}\left}             % \left alias
+\renewcommand{\r}{\vphantom{1j}\right}          % \right alias
+% \newcommand{\ls}[1]
+%   {\mathopen{}\noexpand\begingroup\left#1}      % \left alias
+% \newcommand{\rs}[1]
+%   {\vphantom{1j}\endgroup\right#1}              % \right alias
+
+\let\oldtextleaf\textleaf
+\renewcommand{\textleaf}
+  {{\fontfamily{cmr}\selectfont \oldtextleaf}}  % textleaf
+
+\renewcommand{\qed}{\hfill$\blacksquare$}       % Black-filled qed
+
+\newcommand{\x}[1]{\discretionary{#1}{#1}{#1}}  % correct hyphenation
+\newcommand{\y}{\hspace{0pt}}                   % breackable non-space    
+
+\newcommand{\triple}[4]{%
+  \parbox{.333#4}{#1\hfill}%
+  \parbox{.333#4}{\hfil#2\hfil}%
+  \parbox{.333#4}{\hfill#3}%
+}                                               % triple align
+% #endregion
+
+% #region customizations
+\newenvironment{proof*}[1][proof*]              % better proof environment
+  {\proof[#1]\vspace{0.5em}\vspace*{-\baselineskip}
+  \hspace{\parindent}\leftskip=.5cm\rightskip=.5cm}
+  % {\vspace*{-0.5\baselineskip}\rightskip=0cm\endproof}
+  {\vspace*{-1.5\baselineskip}
+  
+  \rightskip=0cm\endproof}
+
+% \let\bbordermatrix\bordermatrix
+\patchcmd{\bordermatrix}{8.75}{4.75}{}{}
+\patchcmd{\bordermatrix}{\left(}{\left[}{}{}    % bordermatrix with angular brackets (left)
+\patchcmd{\bordermatrix}{\right)}{\right]}{}{}  % bordermatrix with angular brackets (right)
+\patchcmd{\bordermatrix}
+  {\begingroup}{\begingroup\openup1\jot}{}{}    % bordermatrix col height
+
+\hypersetup{
+  colorlinks,
+  linkcolor={red!50!black},
+  citecolor={blue!50!black},
+  urlcolor={blue!80!black}
+}
+
+\lstset{
+  basicstyle=\ttfamily,
+  escapeinside={(*@}{@*)},
+  mathescape=true,
+  extendedchars=true,
+  inputencoding=utf8
+}                                               % styles in listings
+
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{8}     % for bold monofont
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{8}      % for normal monfont
+
+% \definecolor{deepblue}{rgb}{0,0,0.5}
+\newcommand{\pythonstyle}{\lstset{              % python code style
+  xleftmargin=\dimexpr.5cm+\parindent\relax,
+  language=Python,
+  % basicstyle=\ttm,
+  otherkeywords={self},
+  % keywordstyle=\ttb\color{purple},
+  keywordstyle={\bfseries},
+  % emph={MyClass,__init__},
+  % emphstyle=\ttb\color{deepred},
+  % stringstyle=\color{deepgreen},
+  % frame=tb,
+  showstringspaces=false
+}}
+
+\lstnewenvironment{python}[1][]
+  {\pythonstyle\lstset{#1}}{}                   % python environment
+
+\newcommand\pythonexternal[2][]
+  {{\pythonstyle\lstinputlisting[#1]{#2}}}      % external python code
+
+\newcommand\pythoninline[1]
+  {{\pythonstyle\lstinline!#1!}}                % inline python code
+
+\renewcommand{\arraystretch}{1.2}               % table vertical padding
+
+\renewcommand{\arraystretch}{1.2}               % table vertical padding
+
+\lstnewenvironment{pseudocode}[1][]             % pseudocode environment
+  {\lstset{
+    xleftmargin=\dimexpr.5cm+\parindent\relax,
+    gobble=6,
+    #1,
+    emph={
+      if, else, elif, and, or, not,
+      for, while, continue, break, return, yield, do, to,
+      true, false, null
+    },
+    emphstyle={\bfseries}
+  }}{}
+
+\setlist[enumerate, 1]                          % default level 1 list
+  {wide, label=\bfseries\arabic*., labelwidth=10pt, labelindent=0pt}
+\setlist[enumerate, 2]                          % default level 2 list
+  {wide, label=\bfseries(\alph*), topsep=0pt, labelwidth=10pt, labelindent=\leftskip, leftmargin=0pt}
+\setlist[enumerate, 3]                          % default level 2 list
+  {wide, label=\bfseries\roman*, topsep=0pt, labelwidth=10pt, labelindent=\leftskip, leftmargin=0pt}
+
+\newenvironment{enumerate*}[1][,]               % text enumerate
+  {\begin{enumerate}[
+    itemindent=\leftskip+\parindent, labelindent=\leftskip+\parindent, 
+    wide, topsep=0pt,
+    label={\bfseries\arabic*.}, labelwidth=10pt, labelindent=\leftskip+\parindent, 
+    leftmargin=\leftskip, rightmargin=\rightskip,
+    #1
+  ]}
+  {\end{enumerate}}
+
+\newenvironment{itemize*}[1][,]                 % text itemize
+  {\begin{itemize}[
+    itemindent=\leftskip+\parindent, labelindent=\leftskip+\parindent, 
+    wide, topsep=0pt,
+    label={\raisebox{-0.5mm}{\scalebox{1.5}{$\bullet$}}}, labelwidth=10pt, labelindent=\leftskip+\parindent, 
+    leftmargin=\leftskip, rightmargin=\rightskip,
+    #1
+  ]}
+  {\end{itemize}}
+% #endregion
+
+\begin{document}
+\setlength{\columnsep}{0.00pt}
+\begin{multicols*}{4}
+% \setlength{\columnseprule}{0.4pt}
+
+% \newcommand{\hidetext}[1]{\text{#1}}
+\newcommand{\hidetext}[1]{\mathclap{#1}}
+
+% #region aula5
+\noindent
+$\hidetext{ 2}$\includegraphics[page= 2,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{ 4}$\includegraphics[page= 4,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{ 5}$\includegraphics[page= 5,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{ 6}$\includegraphics[page= 6,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{ 7}$\includegraphics[page= 7,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{ 8}$\includegraphics[page= 8,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{ 9}$\includegraphics[page= 9,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{10}$\includegraphics[page=10,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{11}$\includegraphics[page=11,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{12}$\includegraphics[page=12,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{13}$\includegraphics[page=13,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{14}$\includegraphics[page=14,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{15}$\includegraphics[page=15,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{16}$\includegraphics[page=16,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{18}$\includegraphics[page=18,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{19}$\includegraphics[page=19,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{20}$\includegraphics[page=20,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{21}$\includegraphics[page=21,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{22}$\includegraphics[page=22,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{23}$\includegraphics[page=23,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{24}$\includegraphics[page=24,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{25}$\includegraphics[page=25,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{26}$\includegraphics[page=26,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{27}$\includegraphics[page=27,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+$\hidetext{28}$\includegraphics[page=28,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula5.pdf}
+% #endregion
+
+% #region aula6
+\noindent
+$\hidetext{ 3}$\includegraphics[page= 3,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{ 4}$\includegraphics[page= 4,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{ 5}$\includegraphics[page= 5,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{ 6}$\includegraphics[page= 6,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{12}$\includegraphics[page=12,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{15}$\includegraphics[page=15,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{16}$\includegraphics[page=16,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{17}$\includegraphics[page=17,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{18}$\includegraphics[page=18,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{19}$\includegraphics[page=19,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{20}$\includegraphics[page=20,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{21}$\includegraphics[page=21,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{22}$\includegraphics[page=22,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{23}$\includegraphics[page=23,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{24}$\includegraphics[page=24,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{25}$\includegraphics[page=25,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{27}$\includegraphics[page=27,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{30}$\includegraphics[page=30,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{31}$\includegraphics[page=31,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{32}$\includegraphics[page=32,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{33}$\includegraphics[page=33,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{34}$\includegraphics[page=34,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{35}$\includegraphics[page=35,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{36}$\includegraphics[page=36,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+$\hidetext{37}$\includegraphics[page=37,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula6.pdf}
+% #endregion
+
+% #region aula7
+% #endregion
+
+% #region aula8
+\noindent
+$\hidetext{ 2}$\includegraphics[page= 2,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{ 3}$\includegraphics[page= 3,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{ 6}$\includegraphics[page= 6,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{ 7}$\includegraphics[page= 7,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{21}$\includegraphics[page=21,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{22}$\includegraphics[page=22,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{23}$\includegraphics[page=23,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{24}$\includegraphics[page=24,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{25}$\includegraphics[page=25,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{26}$\includegraphics[page=26,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{27}$\includegraphics[page=27,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{28}$\includegraphics[page=28,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{29}$\includegraphics[page=29,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{30}$\includegraphics[page=30,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{31}$\includegraphics[page=31,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{32}$\includegraphics[page=32,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{33}$\includegraphics[page=33,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{34}$\includegraphics[page=34,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{35}$\includegraphics[page=35,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+$\hidetext{36}$\includegraphics[page=36,width=1.00\columnwidth,trim={1.00cm 1.00cm 1.00cm 4.00cm},clip,origin=c,keepaspectratio]{aula8.pdf}
+% #endregion
+
+\vfill\null
+\vfill\null
+{
+  \raggedleft
+  \tiny
+  \it
+
+  Close enough to start a war
+
+  All that I have is on the floor
+
+  God only knows what we're fighting for
+
+  All that I say, you always say more
+
+}
+\end{multicols*}
+\end{document}
