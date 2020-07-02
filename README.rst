@@ -80,3 +80,12 @@ More about the course
 - **Course offering page in PACA:** `https://paca.ime.usp.br/course/view.php?id=1456 <https://paca.ime.usp.br/course/view.php?id=1456>`_
 - **Course official syllabus in Júpiter web:** `https://uspdigital.usp.br/jupiterweb/obterDisciplina?nomdis=&sgldis=mac0317 <https://uspdigital.usp.br/jupiterweb/obterDisciplina?nomdis=&sgldis=mac0317>`_
 
+*******
+License
+*******
+
+The source code in this repository is licensed under the `MIT License <https://opensource.org/licenses/MIT>`_, whereas this complete project bundle is available under `Creative Commons CC-BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`_, unless otherwise noticed inside each file or folder. As a result, you are free to **share** and **adapt** this work, given that you provide **attribution** to the authors and refer to the original source.
+
+- **Share** - copy and redistribute the material in any medium or format.
+- **Adapt** - remix, transform, and build upon the material for any purpose, even commercially.
+- **Attribution** - you must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
