@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2019 Vitor Santa Rosa Gomes
+Copyright (c) 2019 Vitor Santa Rosa Gomes (vitorssrg@gmail.com)
 
 The source code in this repository is licensed under the MIT License, whereas
 this complete project bundle is available under Creative Commons CC-BY 4.0,
